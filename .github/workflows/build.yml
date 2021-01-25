@@ -21,7 +21,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: worker-release-windows
-          path: ./worker/Release/lib/
+          path: ./worker/out/Release/mediasoup-worker.exe
   x64_linux:
     name: Build linux
     runs-on: ubuntu-18.04
@@ -42,7 +42,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: worker-release-linux
-          path: ./worker/out/Release/*.a
+          path: ./worker/out/Release/mediasoup-worker
 
   create-release:
     name: Create GitHub Release
@@ -60,12 +60,7 @@ jobs:
         with:
           name: worker-release-windows
           path: win
-
-      - name: Zip artifacts
-        run: |
-          zip -r -j lin-lib lin/*
-          zip -r -j win-lib win/*
-      
+          
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
@@ -85,9 +80,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./win-lib.zip
-          asset_name: win-lib.zip
-          asset_content_type: application/zip
+          asset_path: ./win/mediasoup-worker.exe
+          asset_name: x64-win-worker
+          asset_content_type: application/octet-stream
 
       - name: Upload linux static libraries
         uses: actions/upload-release-asset@v1
@@ -95,9 +90,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./lin-lib.zip
-          asset_name: lin-lib.zip
-          asset_content_type: application/zip
+          asset_path: ./lin/mediasoup-worker
+          asset_name: x64-lin-worker
+          asset_content_type: application/octet-stream
 
   delete-artifacts:
     name: Delete artifacts
