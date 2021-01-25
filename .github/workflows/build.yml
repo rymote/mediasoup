@@ -1,0 +1,23 @@
+name: build
+on:
+  push:
+
+jobs:
+  build:
+    name: Build windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v2
+      - uses: actions/setup-python@v2
+        with:
+        python-version: '3.8'
+        architecture: 'x64'
+
+      - run: |
+          node npm-scripts postinstall
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: worker-release
+          path: ./worker/Release/
