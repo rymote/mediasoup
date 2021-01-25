@@ -3,7 +3,7 @@ on:
   push:
 
 jobs:
-  build:
+  x64-windows:
     name: Build windows
     runs-on: windows-latest
     steps:
@@ -20,5 +20,26 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: worker-release
-          path: ./worker/Release/
+          name: worker-release-windows
+          path: ./worker/Release/lib/
+  x64_linux:
+    name: Build linux
+    runs-on: ubuntu-18.04
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '2.x'
+          architecture: 'x64'
+
+      - run: |
+          node npm-scripts postinstall
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: worker-release-linux
+          path: ./worker/Release/lib/
