@@ -1,6 +1,8 @@
 name: build
 on:
   push:
+    tags:
+      - 'b*'
 
 jobs:
   x64_windows:
@@ -61,22 +63,14 @@ jobs:
           name: worker-release-windows
           path: win
           
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-      
-      - name: Get current date and time
-        id: datetime
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S')"
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.date.outputs.date }}
-          release_name: ${{ steps.datetime.outputs.date }}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
 
       - name: Upload windows static libraries
         uses: actions/upload-release-asset@v1
