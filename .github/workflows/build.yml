@@ -3,7 +3,7 @@ on:
   push:
 
 jobs:
-  x64-windows:
+  x64_windows:
     name: Build windows
     runs-on: windows-latest
     steps:
