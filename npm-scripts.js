@@ -143,7 +143,7 @@ switch (task)
 			else
 			{
 				execute(`${PYTHON} ./worker/scripts/configure.py --format=msvs -R mediasoup-worker`);
-				execute(`${MSBUILD} ./worker/mediasoup-worker.sln /p:Configuration=${MEDIASOUP_BUILDTYPE}`);
+				execute(`${MSBUILD} ./worker/mediasoup-worker.sln /p:Configuration=${MEDIASOUP_BUILDTYPE} /p:PlatformToolset=v142`);
 			}
 		}
 
