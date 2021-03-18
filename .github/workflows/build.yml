@@ -79,7 +79,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./win/mediasoup-worker.exe
-          asset_name: x64-win-worker
+          asset_name: x64-win-worker.exe
           asset_content_type: application/octet-stream
 
       - name: Upload linux static libraries
