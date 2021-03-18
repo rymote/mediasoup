@@ -37,6 +37,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./worker/out/Release/mediasoup-worker/worker-release-linux
+          asset_path: ./worker/out/Release/mediasoup-worker/mediasoup-worker
           asset_name: x64-lin-worker
           asset_content_type: application/octet-stream
