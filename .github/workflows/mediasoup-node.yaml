@@ -1,6 +1,6 @@
 name: mediasoup-node
 
-on: [push, pull_request]
+on: []
 
 jobs:
   ci:
