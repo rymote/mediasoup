@@ -4,25 +4,25 @@ on:
     types: [created]
 
 jobs:
-#   x64_windows:
-#     name: Build windows
-#     runs-on: windows-latest
-#     steps:
-#       - uses: microsoft/setup-msbuild@v1.0.2
-#       - uses: actions/checkout@v1
-#       - uses: actions/setup-node@v2
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: '2.x'
-#           architecture: 'x64'
+  x64_windows:
+    name: Build windows
+    runs-on: windows-latest
+    steps:
+      - uses: microsoft/setup-msbuild@v1.0.2
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '2.x'
+          architecture: 'x64'
 
-#       - run: |
-#           node npm-scripts postinstall
+      - run: |
+          node npm-scripts postinstall
 
-#       - uses: actions/upload-artifact@v2
-#         with:
-#           name: worker-release-windows
-#           path: ./worker/out/Release/mediasoup-worker.exe
+      - uses: actions/upload-artifact@v2
+        with:
+          name: worker-release-windows
+          path: ./worker/out/Release/mediasoup-worker.exe
   x64_linux:
     name: Build linux
     runs-on: ubuntu-18.04
@@ -48,7 +48,7 @@ jobs:
   create-release:
     name: Create GitHub Release
     runs-on: ubuntu-18.04
-    needs: [x64_linux]
+    needs: [x64_linux, x64_windows]
     steps:
       - name: Download linux artifacts
         uses: actions/download-artifact@v2
@@ -56,11 +56,11 @@ jobs:
           name: worker-release-linux
           path: lin
 
-#       - name: Download windows artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: worker-release-windows
-#           path: win
+      - name: Download windows artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: worker-release-windows
+          path: win
           
       - name: Create Release
         id: create_release
@@ -71,15 +71,15 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
 
-#       - name: Upload windows static libraries
-#         uses: actions/upload-release-asset@v1
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         with:
-#           upload_url: ${{ steps.create_release.outputs.upload_url }}
-#           asset_path: ./win/mediasoup-worker.exe
-#           asset_name: x64-win-worker.exe
-#           asset_content_type: application/octet-stream
+      - name: Upload windows static libraries
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./win/mediasoup-worker.exe
+          asset_name: x64-win-worker.exe
+          asset_content_type: application/octet-stream
 
       - name: Upload linux static libraries
         uses: actions/upload-release-asset@v1
@@ -102,4 +102,4 @@ jobs:
         with:
           name: |
             worker-release-linux
-#            worker-release-windows
+            worker-release-windows
