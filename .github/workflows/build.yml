@@ -1,7 +1,8 @@
 name: build
 on:
   release:
-    types: [created]
+    tags:
+      - 'b*'
 
 jobs:
   x64_windows:
